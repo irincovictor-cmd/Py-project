@@ -37,9 +37,9 @@ If you do not have Git installed, download the repository ZIP from GitHub, extra
 On the first launch, create the administrator account using a username and password (minimum 8 characters). There are no hardcoded default passwords.
 
 1. Log in as **Admin** and choose **Create Staff Account**. Provide a staff username and temporary password.
-2. Log out, then log in as **Staff**. Submit a report (e.g., PC-01 and 'Monitor has no display'). Staff can view their own reports and current statuses, but cannot change statuses or delete reports.
-3. Log out, log in as **Admin**, and review all submitted reports. Choose **Mark In Progress** when investigating the issue. When it is fixed, choose **Mark Resolved** and record what was done. Admin can reopen or delete reports if necessary.
-4. Log in as Staff to see the updated status of their reports.
+2. Click **Switch Account**, then log in as **Staff**. Submit a report (e.g., PC-01 and 'Monitor has no display'). Staff can view their own reports and current statuses, but cannot change statuses or delete reports.
+3. Click **Switch Account**, log in as **Admin**, and review all submitted reports. Choose **Mark In Progress** when investigating the issue. When it is fixed, choose **Mark Resolved** and record what was done. Admin can reopen or delete reports if necessary.
+4. Click **Switch Account** and log in as Staff to see the updated status of their reports.
 
 Report IDs and dates are assigned automatically. Both roles can search reports and filter by status. Summary counts reflect reports visible to the logged-in user.
 
