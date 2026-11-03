@@ -32,16 +32,22 @@ If you do not have Git installed, download the repository ZIP from GitHub, extra
 
 `requirements.txt` lists no external packages. It does not install Python itself, Tkinter separately, Git, or VS Code. Those applications need to be installed separately where required.
 
-## Features
+## User roles and workflow
 
-- Create reports with a computer number and issue description.
-- Automatically assign a report ID and date.
-- Search by report ID, computer number, issue or status.
-- View all reports, or filter by pending/resolved status.
-- Change a report's status between Pending and Resolved.
-- Delete a selected report after confirmation.
-- View summary counts for total, pending, and resolved reports.
-- Save records locally in `reports.json` automatically.
+On the first launch, create the administrator account using a username and password (minimum 8 characters). There are no hardcoded default passwords.
+
+1. Log in as **Admin** and choose **Create Staff Account**. Provide a staff username and temporary password.
+2. Log out, then log in as **Staff**. Submit a report (e.g., PC-01 and 'Monitor has no display'). Staff can view their own reports and current statuses, but cannot change statuses or delete reports.
+3. Log out, log in as **Admin**, and review all submitted reports. Choose **Mark In Progress** when investigating the issue. When it is fixed, choose **Mark Resolved** and record what was done. Admin can reopen or delete reports if necessary.
+4. Log in as Staff to see the updated status of their reports.
+
+Report IDs and dates are assigned automatically. Both roles can search reports and filter by status. Summary counts reflect reports visible to the logged-in user.
+
+## Local storage and limitations
+
+- `reports.json` contains issue reports. `users.json` contains account details and salted password hashes. Neither file is committed to Git.
+- The program is **offline and single-computer**. Staff and Admin accounts are intended to take turns using the same computer and local files. The app does **not** synchronize reports across computers or support remote staff submissions.
+- Accounts are suitable for classroom demonstration, not a production security boundary against someone with direct access to the local JSON files. Back up both JSON files together when migrating to another computer.
 
 The application starts with no reports. `reports.json` is created on the first successful save and is ignored by Git.
 
@@ -55,4 +61,4 @@ Reports are held in a Python dictionary while the application runs and saved to 
 
 ## Project scope
 
-A functional prototype built with standard-library Python and Tkinter. No login, server, third-party dependencies, or SQL database.
+A functional prototype built with standard-library Python and Tkinter. Local login with role-specific screens, but no server, third-party dependencies, or SQL database.
