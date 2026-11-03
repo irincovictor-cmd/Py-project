@@ -37,13 +37,15 @@ class ReportStore:
                     raise ValueError("Incomplete report entry.")
                 if not record["computer"].strip() or not record["issue"].strip():
                     raise ValueError("Empty report field.")
-                if record["status"] not in ("Pending", "Resolved"):
+                if record["status"] not in ("Pending", "In Progress", "Resolved"):
                     raise ValueError("Invalid status.")
                 clean[report_id] = {
                     "computer": record["computer"],
                     "issue": record["issue"],
                     "date": record["date"],
                     "status": record["status"],
+                    "reporter": str(record.get("reporter", "Unknown")),
+                    "resolution": str(record.get("resolution", "")),
                 }
             self.reports = clean
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
@@ -72,7 +74,7 @@ class ReportStore:
                 temp_path.unlink(missing_ok=True)
         self.reports = updated
 
-    def add(self, computer: str, issue: str) -> str:
+    def add(self, computer: str, issue: str, reporter: str = "Unknown") -> str:
         computer, issue = computer.strip().upper(), issue.strip()
         if not computer or not issue:
             raise ReportError("Computer number and issue description are required.")
@@ -88,17 +90,20 @@ class ReportStore:
             "issue": issue,
             "date": date.today().isoformat(),
             "status": "Pending",
+            "reporter": reporter.strip() or "Unknown",
+            "resolution": "",
         }
         self._save(updated)
         return report_id
 
-    def update_status(self, report_id: str, status: str) -> None:
+    def update_status(self, report_id: str, status: str, resolution: str = "") -> None:
         if report_id not in self.reports:
             raise ReportError("Select an existing report.")
-        if status not in ("Pending", "Resolved"):
+        if status not in ("Pending", "In Progress", "Resolved"):
             raise ReportError("Invalid report status.")
         updated = {key: dict(value) for key, value in self.reports.items()}
         updated[report_id]["status"] = status
+        updated[report_id]["resolution"] = resolution.strip() if status == "Resolved" else ""
         self._save(updated)
 
     def delete(self, report_id: str) -> None:
@@ -110,17 +115,17 @@ class ReportStore:
 
     def search(self, term: str = "", status: str = "All") -> list[tuple[str, dict[str, str]]]:
         term = term.strip().casefold()
-        if status not in ("All", "Pending", "Resolved"):
+        if status not in ("All", "Pending", "In Progress", "Resolved"):
             raise ReportError("Invalid filter.")
         matches = [
             (key, record) for key, record in self.reports.items()
             if (status == "All" or record["status"] == status)
             and (not term or any(term in value.casefold()
-                 for value in (key, record["computer"], record["issue"], record["status"])))
+                 for value in (key, record["computer"], record["issue"], record["status"], record.get("reporter", ""))))
         ]
         return sorted(matches, key=lambda item: int(item[0][1:]), reverse=True)
 
     def summary(self) -> tuple[int, int, int]:
         total = len(self.reports)
-        pending = sum(item["status"] == "Pending" for item in self.reports.values())
+        pending = sum(item["status"] != "Resolved" for item in self.reports.values())
         return total, pending, total - pending
