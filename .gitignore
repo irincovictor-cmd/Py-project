@@ -1,5 +1,7 @@
 # Local user records
 reports.json
+users.json
+.users-*.tmp
 .reports-*.tmp
 
 # Python
