@@ -1,0 +1,4 @@
+# No third-party Python packages are required.
+# This project uses Python standard-library modules:
+# tkinter, tkinter.ttk, tkinter.messagebox, json, datetime, pathlib, os, tempfile.
+# Install Python 3.10+ with Tkinter support before running the application.
