@@ -84,7 +84,7 @@ class Application:
         bar.pack(fill="x", pady=(0, 14))
         ttk.Label(bar, text="Computer Laboratory Issue Reporting System",
                   font=("Segoe UI", 16, "bold")).pack(side="left")
-        ttk.Button(bar, text="Log Out", command=self.show_login).pack(side="right")
+        ttk.Button(bar, text="Switch Account", command=self.show_login).pack(side="right")
         ttk.Label(bar, text=f"{self.username} ({self.role.title()})").pack(
             side="right", padx=15)
 
